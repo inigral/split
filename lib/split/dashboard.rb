@@ -14,19 +14,23 @@ module Split
 
     helpers Split::DashboardHelpers
 
+    before do
+      headers['X-FRAME-OPTIONS'] = 'ALLOW'
+    end
+
     get '/' do
       @experiments = Split::Experiment.all
       erb :index
     end
 
-    post '/:experiment' do
+    get '/:experiment' do
       @experiment = Split::Experiment.find(params[:experiment])
       @alternative = Split::Alternative.new(params[:alternative], params[:experiment])
       @experiment.winner = @alternative.name
       redirect url('/')
     end
 
-    post '/reset/:experiment' do
+    get '/reset/:experiment' do
       @experiment = Split::Experiment.find(params[:experiment])
       @experiment.reset
       redirect url('/')
