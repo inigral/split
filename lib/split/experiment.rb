@@ -2,13 +2,27 @@ module Split
   class Experiment
     attr_accessor :name
     attr_accessor :winner
+    attr_accessor :metrics
 
     def initialize(name, *alternative_names)
       @name = name.to_s
       @alternatives = alternative_names.map do |alternative|
                         Split::Alternative.new(alternative, name)
                       end
+      @metrics = []
     end
+
+    def metrics
+      metrics = Split.redis.hget(:metrics).split(",")
+      @metrics = metrics unless metrics.nil?
+      @metrics
+    end
+
+    def add_metric(name)
+      @metrics.push name
+      Split.redis.hset(key, :metrics, @metrics.join(","))
+    end
+
 
     def winner
       if w = Split.redis.hget(:experiment_winner, name)
