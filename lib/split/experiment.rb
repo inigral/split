@@ -9,7 +9,8 @@ module Split
       @alternatives = alternative_names.map do |alternative|
                         Split::Alternative.new(alternative, name)
                       end
-      @metrics = []
+      metric_keys = Split.redis.keys "#{key}:metric:*"
+      @metrics = metric_keys.collect {|key| Metric.find(key) }
     end
 
     def winner

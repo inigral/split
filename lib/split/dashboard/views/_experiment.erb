@@ -71,23 +71,6 @@
           <% end %>
         </td>
       </tr>
-      <% unless alternative.metrics.empty? %>
-      <tr>
-        <td>
-          <table>
-           <% alternative.metrics.each do |name, value| %>
-
-            <tr>
-              <td>
-                <%= name %>
-              </td>
-            </tr>
-           <% end %>
-
-          </table>
-        </td>
-      </tr>
-      <% end %>
       <% total_participants += alternative.participant_count %>
       <% total_completed += alternative.completed_count %>
     <% end %>
@@ -102,4 +85,27 @@
       <td>N/A</td>
     </tr>
   </table>
+
+  <table>
+    <tr>
+      <th>Event Name</th>
+      <% experiment.alternatives.each do |alternative| %>
+        <th><%= alternative.name %></th>
+      <% end %>
+    </tr>
+
+    <% total_participants = total_completed = 0 %>
+    <% experiment.metrics.each do |metric| %>
+      <tr>
+        <td>
+          <%= metric.name %>
+        </td>
+        <% experiment.alternatives.each do |alternative| %>
+          <td><%= metric.values[alternative.name] || 0 %></td>
+        <% end %>
+     </tr>
+    <% end %>
+
+  </table>
+
 </div>

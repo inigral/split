@@ -8,6 +8,7 @@ module Split
     attr_accessor :allow_multiple_experiments
     attr_accessor :enabled
     attr_accessor :server
+    attr_accessor :redis_server
 
     def initialize
       @robot_regex = /\b(Baidu|Gigabot|Googlebot|libwww-perl|lwp-trivial|msnbot|SiteUptime|Slurp|WordPress|ZIBB|ZyBorg)\b/i
@@ -18,6 +19,7 @@ module Split
       @allow_multiple_experiments = false
       @enabled = true
       @server = "https://localhost:3000"
+      @redis_server = "https://localhost:6380"
     end
   end
 end
