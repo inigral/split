@@ -36,18 +36,11 @@ module Split
     end
 
     def increment_participation
-      Split.redis.hsetnx key, 'participant_count', 0
       Split.redis.hincrby key, 'participant_count', 1
     end
 
     def increment_completion
-      Split.redis.hsetnx key, 'completed_count', 0
       Split.redis.hincrby key, 'completed_count', 1
-    end
-
-    def increment_metric(metric)
-      Split.redis.hincrby key, "#{metric}_count", 1
-      experiment.add_metric(metric)
     end
 
     def control?
@@ -62,6 +55,7 @@ module Split
     def experiment
       Split::Experiment.find(experiment_name)
     end
+
     def z_score
       # CTR_E = the CTR within the experiment split
       # CTR_C = the CTR within the control split
@@ -88,16 +82,12 @@ module Split
     end
 
     def save
-      Split.redis.hkeys(key).each do |k|
-        Split.redis.hsetnx key, k, 0
-      end
+      Split.redis.hsetnx key, 'participant_count', 0
+      Split.redis.hsetnx key, 'completed_count', 0
     end
 
     def reset
-      #Split.redis.hmset key, 'participant_count', 0, 'completed_count', 0
-      Split.redis.hkeys(key).each do |k|
-        Split.redis.hmset key, k, 0
-      end
+      Split.redis.hmset key, 'participant_count', 0, 'completed_count', 0
     end
 
 

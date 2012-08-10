@@ -71,20 +71,23 @@
           <% end %>
         </td>
       </tr>
+      <% unless alternative.metrics.empty? %>
       <tr>
         <td>
           <table>
+           <% alternative.metrics.each do |name, value| %>
+
             <tr>
               <td>
-                <%# alternative.name %>
-                <%# alternative.metrics.each do |metric| %>
-
-                <%# end %>
+                <%= name %>
               </td>
             </tr>
+           <% end %>
+
           </table>
         </td>
       </tr>
+      <% end %>
       <% total_participants += alternative.participant_count %>
       <% total_completed += alternative.completed_count %>
     <% end %>

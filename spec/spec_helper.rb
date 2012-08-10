@@ -5,6 +5,7 @@ require 'bundler/setup'
 require 'split'
 require 'ostruct'
 require 'complex' if RUBY_VERSION.match(/1\.8/)
+require 'time' if RUBY_VERSION.match(/1\.9/)
 
 def session
   @session ||= {}

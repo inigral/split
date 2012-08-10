@@ -35,13 +35,15 @@ module Split
       Split.configuration.db_failover_on_db_error.call(e)
     end
 
-    def measure(experiment_name, metric, options = {:reset => true})
+    def measure(experiment_name, metric_name, options = {:reset => true})
+
       return if exclude_visitor? or !Split.configuration.enabled
       return unless (experiment = Split::Experiment.find(experiment_name))
+
       if alternative_name = ab_user[experiment.key]
         alternative = Split::Alternative.new(alternative_name, experiment_name)
-        alternative.increment_metric(metric)
-        session[:split].delete(experiment_name) if options[:reset]
+        experiment.measure(metric_name, alternative_name)
+        #session[:split].delete(experiment_name) if options[:reset]
       end
     rescue => e
       raise unless Split.configuration.db_failover
@@ -59,6 +61,7 @@ module Split
 
     def ab_user
       session[:split] ||= {}
+      session[:split]
     end
 
     def exclude_visitor?

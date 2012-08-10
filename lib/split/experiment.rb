@@ -12,24 +12,18 @@ module Split
       @metrics = []
     end
 
-    def metrics
-      metrics = Split.redis.hget(:metrics).split(",")
-      @metrics = metrics unless metrics.nil?
-      @metrics
-    end
-
-    def add_metric(name)
-      @metrics.push name
-      Split.redis.hset(key, :metrics, @metrics.join(","))
-    end
-
-
     def winner
       if w = Split.redis.hget(:experiment_winner, name)
         Split::Alternative.new(w, name)
       else
         nil
       end
+    end
+
+    def metrics
+      metric_keys = Split.redis.keys "#{key}:metric:*"
+      @metrics = metric_keys.collect {|key| Metric.find(key) }
+      @metrics
     end
 
     def control
@@ -59,6 +53,14 @@ module Split
 
     def next_alternative
       winner || random_alternative
+    end
+
+    def measure(metric_name, alternative_name)
+      metric = Metric.find_or_create(name: metric_name,
+                                     experiment_name: name,
+                                     values: {"#{alternative_name}" => 0})
+      metric.increment alternative_name
+      metric
     end
 
     def random_alternative

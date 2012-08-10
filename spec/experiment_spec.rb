@@ -201,6 +201,61 @@ describe Split::Experiment do
     end
   end
 
+  describe "measure" do
+    let(:experiment) { Split::Experiment.find_or_create('link_color', 'blue', 'red') }
+    describe "first call" do
+      before do
+        experiment.measure("clicks","red")
+      end
+      describe "metrics" do
+        let(:metrics) { experiment.metrics }
+        describe "metric" do
+          let (:metric)  { metrics.first }
+          subject { metric }
+          it { should_not be_nil }
 
+          describe "name" do
+            subject { metric.name }
+            it { should eql "clicks" }
+          end
+          describe "experiment name" do
+            subject { metric.experiment_name }
+            it { should eql "link_color" }
+          end
+          describe "values" do
+            context "keys" do
+              subject { metric.values.keys }
+              it { should include "red" }
+            end
+            context "values" do
+              subject { metric.values.values }
+              it { should include 1 }
+            end
+          end
+        end
+      end
+    end
+    describe "mutliple calls" do
+      before do
+        experiment.measure("clicks","red")
+        experiment.measure("clicks","red")
+        experiment.measure("clicks","red")
+        experiment.measure("clicks","blue")
+        experiment.measure("clicks","blue")
 
+      end
+      let (:metric) { Split::Metric.find Split::Metric.generate_key("link_color", "clicks") }
+      describe "keys" do
+        subject { metric.values.keys }
+        it { should include "red" }
+        it { should include "blue" }
+      end
+
+      describe "values" do
+        subject { metric.values.values }
+        it { should include 3 }
+        it { should include 2 }
+      end
+    end
+  end
 end
