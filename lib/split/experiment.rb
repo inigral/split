@@ -23,7 +23,7 @@ module Split
 
     def metrics
       metric_keys = Split.redis.keys "#{key}:metric:*"
-      @metrics = metric_keys.collect {|key| Metric.find(key) }
+      @metrics = metric_keys.collect {|k| Metric.find(k) }
       @metrics
     end
 
@@ -94,12 +94,14 @@ module Split
 
     def reset
       alternatives.each(&:reset)
+      metrics.each(&:reset)
       reset_winner
       increment_version
     end
 
     def delete
       alternatives.each(&:delete)
+      metrics.each(&:delete)
       reset_winner
       Split.redis.srem(:experiments, name)
       Split.redis.del(name)

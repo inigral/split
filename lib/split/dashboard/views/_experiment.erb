@@ -10,8 +10,8 @@
       <form action="<%= url "/reset/#{experiment.name}" %>" method='post' onclick="return confirmReset()">
         <input type="submit" value="Reset Data">
       </form>
-      <form action="<%= url "/#{experiment.name}" %>" method='post' onclick="return confirmDelete()">
-        <input type="hidden" name="_method" value="delete"/>
+      <form action="<%= url "/#{experiment.name}/delete" %>" method='post' onclick="return confirmDelete()">
+        <input type="hidden" name="_method" value="get"/>
         <input type="submit" value="Delete" class="red">
       </form>
     </div>

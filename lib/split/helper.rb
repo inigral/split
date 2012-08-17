@@ -117,6 +117,9 @@ module Split
         else
           if forced_alternative = override(experiment.name, experiment.alternative_names)
             ret = forced_alternative
+            puts "---------------------------------------------------"
+            puts ret
+            puts "---------------------------------------------------"
           else
             clean_old_versions(experiment)
             begin_experiment(experiment) if exclude_visitor? or not_allowed_to_test?(experiment.key)

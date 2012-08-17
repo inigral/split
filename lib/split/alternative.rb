@@ -103,7 +103,7 @@ module Split
       Hash === name && String === name.keys.first && Float(name.values.first) rescue false
     end
 
-    private
+     private
 
     def key
       "#{experiment_name}:#{name}"

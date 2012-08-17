@@ -41,7 +41,7 @@ module Split
   # create a new one.
   def redis
     return @redis if @redis
-    self.redis = 'localhost:6379'
+    self.redis = configuration.redis_server
     self.redis
   end
 

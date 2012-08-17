@@ -19,7 +19,7 @@ module Split
       @allow_multiple_experiments = false
       @enabled = true
       @server = "https://localhost:3000"
-      @redis_server = "https://localhost:6380"
+      @redis_server = "localhost:6380"
     end
   end
 end

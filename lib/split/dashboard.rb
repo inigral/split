@@ -36,7 +36,7 @@ module Split
       redirect url('/')
     end
 
-    delete '/:experiment' do
+    get '/:experiment/delete' do
       @experiment = Split::Experiment.find(params[:experiment])
       @experiment.delete
       redirect url('/')
