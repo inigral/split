@@ -1,11 +1,15 @@
 module Split
   module DashboardHelpers
     def url(*path_parts)
-      Split.configuration.server + [ path_prefix, path_parts ].join("/").squeeze('/')
+      "https://" + [ server_name, path_prefix, path_parts ].join("/").squeeze('/')
     end
 
     def path_prefix
       request.env['SCRIPT_NAME']
+    end
+
+    def server_name
+      request.env['SERVER_NAME']
     end
 
     def number_to_percentage(number, precision = 2)
