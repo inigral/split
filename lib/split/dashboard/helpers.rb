@@ -9,7 +9,7 @@ module Split
     end
 
     def server_name
-      SchoolConfiguration.mobile_domain
+      Split.configuration.server
     end
 
     def number_to_percentage(number, precision = 2)
