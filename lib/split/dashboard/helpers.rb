@@ -9,7 +9,7 @@ module Split
     end
 
     def server_name
-      request.env['SERVER_NAME']
+      request.env['HTTP_HOST']
     end
 
     def number_to_percentage(number, precision = 2)

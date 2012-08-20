@@ -19,11 +19,13 @@ module Split
     end
 
     get '/' do
+      Rails.logger.debug request.env
       @experiments = Split::Experiment.all
       erb :index
     end
 
     get '/:experiment' do
+
       @experiment = Split::Experiment.find(params[:experiment])
       @alternative = Split::Alternative.new(params[:alternative], params[:experiment])
       @experiment.winner = @alternative.name
