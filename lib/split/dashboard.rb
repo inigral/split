@@ -19,7 +19,7 @@ module Split
     end
 
     get '/' do
-      Rails.logger.debug request.env
+      Rails.logger.warn request.env
       @experiments = Split::Experiment.all
       erb :index
     end
