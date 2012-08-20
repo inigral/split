@@ -9,7 +9,7 @@ module Split
     end
 
     def server_name
-      request.env['HTTP_HOST']
+      SchoolConfiguration.mobile_domain
     end
 
     def number_to_percentage(number, precision = 2)
