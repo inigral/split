@@ -7,6 +7,7 @@
 
     <div class='inline-controls'>
       <small><%= experiment.start_time ? experiment.start_time.strftime('%Y-%m-%d') : 'Unknown' %></small>
+      <!--
       <form action="<%= url "/reset/#{experiment.name}" %>" method='post' onclick="return confirmReset()">
         <input type="submit" value="Reset Data">
       </form>
@@ -14,6 +15,7 @@
         <input type="hidden" name="_method" value="get"/>
         <input type="submit" value="Delete" class="red">
       </form>
+      -->
     </div>
   </div>
   <table>
