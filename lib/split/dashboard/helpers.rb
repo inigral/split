@@ -9,7 +9,12 @@ module Split
     end
 
     def server_name
-      Split.configuration.server
+      if Split.configuration.server.respond_to? :call
+        Split.configuration.server.call
+      else
+        Split.configuration.server
+      end
+
     end
 
     def number_to_percentage(number, precision = 2)
